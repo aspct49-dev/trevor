@@ -76,8 +76,8 @@ export function SignUpPage() {
           <img
             src={registerForm}
             alt={`Stake's registration form with referral code ${CODE} filled in`}
-            width={630}
-            height={314}
+            width={1086}
+            height={541}
             loading="lazy"
             decoding="async"
           />

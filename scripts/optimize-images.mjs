@@ -33,7 +33,7 @@ const JOBS = [
   ['reward-card-bg.png', 'reward-card-bg.webp', undefined, 88],
   ['logo-mask.png', 'logo-mask.webp', undefined, 90], // the logo glow's shape (used as a CSS mask)
   ['card-texture.png', 'card-texture.webp', undefined, 86],
-  ['register-form.png', 'register-form.webp', undefined, 90],
+  ['register-form.png', 'register-form.webp', 1086, 90], // 362px slot, at 3x
 ]
 
 for (const [source, output, width, quality] of JOBS) {
