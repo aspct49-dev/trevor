@@ -1,8 +1,8 @@
-import { useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 import type { CSSProperties } from 'react'
 import { Link } from 'react-router'
-import { PLATFORMS } from '../../shared/leaderboard'
-import type { LeaderboardEntry } from '../../shared/leaderboard'
+import { PLATFORMS, raceName } from '../../shared/leaderboard'
+import type { ArchivedRaceSummary, LeaderboardEntry } from '../../shared/leaderboard'
 import { formatUsd, useCountdown, useHoverAnimation } from '../hooks'
 
 import cardTexture from '../assets/card-texture.webp'
@@ -313,6 +313,126 @@ export function RankingTable({ entries, prizes }: { entries: LeaderboardEntry[];
         <button type="button" className="ranking__more" onClick={() => setExpanded((e) => !e)} aria-expanded={expanded}>
           {expanded ? 'VIEW LESS' : 'VIEW MORE'}
         </button>
+      )}
+    </section>
+  )
+}
+
+/* ——————————————————————— Finished races ——————————————————————— */
+
+/** A finished race, in the countdown's place: the day it ended */
+export function RaceEnded({ end }: { end: number }) {
+  const day = new Date(end - 1).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric', timeZone: 'UTC' })
+  return (
+    <section className="countdown" aria-label="Leaderboard ended">
+      <span className="countdown__icon" aria-hidden>
+        <img src={timerGlow} alt="" />
+      </span>
+      <h2 className="countdown__title">LEADERBOARD ENDED</h2>
+      <p className="countdown__ended">{day.toUpperCase()}</p>
+    </section>
+  )
+}
+
+/** Up to this many finished races sit centred in a row; more go in a slider showing this many at a time */
+const IN_VIEW = 3
+
+function Chevron({ left }: { left?: boolean }) {
+  return (
+    <svg width="8" height="13" viewBox="0 0 8 13" aria-hidden style={left ? undefined : { transform: 'scaleX(-1)' }}>
+      <path d="M6.5 1.5 1.5 6.5l5 5" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+    </svg>
+  )
+}
+
+/**
+ * Past Leaderboards, under the live table (as on kingkulbik): every finished
+ * race in date order, earliest on the left, each with its winner, prize pool
+ * and a button to its full results. Up to three sit centred; more go in a
+ * slider that opens on the newest three. Nothing is shown until a race has finished.
+ */
+export function PastLeaderboards({ races, onView }: { races: ArchivedRaceSummary[]; onView: (raceId: string) => void }) {
+  const ordered = [...races].sort((a, b) => a.start - b.start)
+  const sliding = ordered.length > IN_VIEW
+  const viewport = useRef<HTMLDivElement>(null)
+  const [nav, setNav] = useState({ back: false, more: false })
+
+  const update = useCallback(() => {
+    const el = viewport.current
+    if (!el) return
+    setNav({ back: el.scrollLeft > 1, more: el.scrollLeft < el.scrollWidth - el.clientWidth - 1 })
+  }, [])
+
+  // Open on the newest races (the right-hand end), and keep the arrows right as the window resizes
+  useEffect(() => {
+    const el = viewport.current
+    if (!sliding || !el) return
+    el.scrollLeft = el.scrollWidth
+    update()
+    window.addEventListener('resize', update)
+    return () => window.removeEventListener('resize', update)
+  }, [sliding, ordered.length, update])
+
+  if (ordered.length === 0) return null
+
+  // One card at a time; the arrows are checked again once the slide has finished
+  const step = (dir: 1 | -1) => {
+    const el = viewport.current
+    const card = el?.querySelector('.past-lb__item')
+    const still = window.matchMedia('(prefers-reduced-motion: reduce)').matches
+    el?.scrollBy({ left: dir * (card ? card.getBoundingClientRect().width + 8 : 273), behavior: still ? 'auto' : 'smooth' })
+    window.setTimeout(update, still ? 0 : 450)
+  }
+
+  const list = (
+    <ul className="past-lb__list">
+      {ordered.map((race) => (
+        <li key={race.id} className="past-lb__item">
+          <article className="past-lb__card">
+            <img className="past-lb__bg" src={cardTexture} alt="" loading="lazy" decoding="async" />
+            <img className="past-lb__avatar" src={avatar1st} width={113} height={113} alt="" loading="lazy" decoding="async" />
+            <p className="past-lb__name">{race.winner ?? '—'}</p>
+            <p className="past-lb__winner">
+              <img src={trophyCard} width={14} height={14} alt="" />
+              WINNER
+            </p>
+            <div className="past-lb__pool">
+              <span className="past-lb__amount">${race.pool.toLocaleString('en-US')}</span>
+              <span className="past-lb__pool-label">PRIZE POOL</span>
+              <span className="past-lb__month">{raceName(race).toUpperCase()}</span>
+            </div>
+          </article>
+          <button type="button" className="btn btn--blue past-lb__view" onClick={() => onView(race.id)}>
+            View Winners
+          </button>
+        </li>
+      ))}
+    </ul>
+  )
+
+  return (
+    <section className="past-lb" aria-labelledby="past-lb-title">
+      <header className="past-lb__head">
+        <h2 id="past-lb-title" className="past-lb__title">
+          <span className="grad-blue">PAST</span> <span className="grad-silver">LEADERBOARDS</span>
+        </h2>
+        <p className="past-lb__sub">Check out our recent Leaderboard &amp; view winners!</p>
+      </header>
+
+      {sliding ? (
+        <div className="past-lb__slider">
+          <button type="button" className="past-lb__nav" aria-label="Earlier leaderboards" disabled={!nav.back} onClick={() => step(-1)}>
+            <Chevron left />
+          </button>
+          <div className="past-lb__viewport" ref={viewport} onScroll={update}>
+            {list}
+          </div>
+          <button type="button" className="past-lb__nav" aria-label="Later leaderboards" disabled={!nav.more} onClick={() => step(1)}>
+            <Chevron />
+          </button>
+        </div>
+      ) : (
+        list
       )}
     </section>
   )

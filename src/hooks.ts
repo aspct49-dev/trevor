@@ -1,6 +1,6 @@
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react'
 import type { AnimationEvent, CSSProperties, ReactNode } from 'react'
-import type { LeaderboardResponse } from '../shared/leaderboard'
+import type { ArchivedRace, ArchivedRaceSummary, LeaderboardResponse } from '../shared/leaderboard'
 import type { KickStatus } from '../shared/site'
 
 /**
@@ -240,3 +240,63 @@ export function copyText(text: string): Promise<void> {
 
 export const formatUsd = (value: number, fractionDigits = 2) =>
   value.toLocaleString('en-US', { minimumFractionDigits: fractionDigits, maximumFractionDigits: fractionDigits })
+
+/*
+ * Past leaderboards (server/leaderboardArchive.ts). Finished races don't
+ * change, so answers are kept for the visit; the list is asked for again when
+ * a new race starts, because that is when another one has just finished.
+ */
+let archiveList: { forRace: number; races: ArchivedRaceSummary[] } | null = null
+const archivedRaces = new Map<string, ArchivedRace>()
+
+export type ArchiveState<T> = { status: 'loading' | 'ready' | 'error'; data: T | null }
+
+/** Every finished race, newest first. `currentStart` is the start of the race running now. */
+export function useArchivedRaces(currentStart: number): ArchiveState<ArchivedRaceSummary[]> {
+  const [state, setState] = useState<ArchiveState<ArchivedRaceSummary[]>>({ status: 'loading', data: null })
+
+  useEffect(() => {
+    if (archiveList?.forRace === currentStart) {
+      setState({ status: 'ready', data: archiveList.races })
+      return
+    }
+    let cancelled = false
+    fetch('/api/leaderboard-archive')
+      .then((res) => (res.ok ? (res.json() as Promise<{ races: ArchivedRaceSummary[] }>) : Promise.reject(new Error(String(res.status)))))
+      .then((body) => {
+        archiveList = { forRace: currentStart, races: body.races }
+        if (!cancelled) setState({ status: 'ready', data: body.races })
+      })
+      .catch(() => !cancelled && setState({ status: 'error', data: null }))
+    return () => {
+      cancelled = true
+    }
+  }, [currentStart])
+
+  return state
+}
+
+/** One finished race's standings (null id: none chosen) */
+export function useArchivedRace(id: string | null): ArchiveState<ArchivedRace> {
+  const [state, setState] = useState<ArchiveState<ArchivedRace>>({ status: 'loading', data: null })
+
+  useEffect(() => {
+    if (!id) return setState({ status: 'ready', data: null })
+    const kept = archivedRaces.get(id)
+    if (kept) return setState({ status: 'ready', data: kept })
+    setState({ status: 'loading', data: null })
+    let cancelled = false
+    fetch(`/api/leaderboard-archive?race=${encodeURIComponent(id)}`)
+      .then((res) => (res.ok ? (res.json() as Promise<{ race: ArchivedRace }>) : Promise.reject(new Error(String(res.status)))))
+      .then((body) => {
+        archivedRaces.set(id, body.race)
+        if (!cancelled) setState({ status: 'ready', data: body.race })
+      })
+      .catch(() => !cancelled && setState({ status: 'error', data: null }))
+    return () => {
+      cancelled = true
+    }
+  }, [id])
+
+  return state
+}

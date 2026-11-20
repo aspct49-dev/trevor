@@ -19,7 +19,7 @@
  * logged, or included in error messages.
  */
 
-import { PLATFORMS, PRIZES, RANK_BY, getRaceWindow, maskName } from '../shared/leaderboard.js'
+import { PLATFORMS, RANK_BY, getRaceWindow, maskName, prizesFor } from '../shared/leaderboard.js'
 import type { LeaderboardEntry, LeaderboardResponse, Platform, SourceStatus } from '../shared/leaderboard.js'
 
 const REQUEST_TIMEOUT_MS = 8000
@@ -127,12 +127,12 @@ export function parseLeaderboardCsv(csv: string) {
   })
 }
 
-type Row = ReturnType<typeof parseLeaderboardCsv>[number] & { platform: Platform }
+export type Row = ReturnType<typeof parseLeaderboardCsv>[number] & { platform: Platform }
 
-type FetchOptions = { now?: number; fetchImpl?: typeof fetch; apiUrls?: Partial<Record<Platform, string>> }
+export type FetchOptions = { now?: number; fetchImpl?: typeof fetch; apiUrls?: Partial<Record<Platform, string>> }
 
 /** One platform's standings for the race window, unmasked (server-side only) */
-async function fetchPlatform(
+export async function fetchPlatform(
   platform: Platform,
   window: { start: number; end: number },
   token: string,
@@ -142,7 +142,7 @@ async function fetchPlatform(
   url.search = new URLSearchParams({
     timePeriod: 'customRange',
     isStakeExclusive: 'false',
-    limit: String(Math.max(PRIZES.length, 50)),
+    limit: String(Math.max(prizesFor(window.start).length, 50)),
     startDate: String(window.start),
     endDate: String(window.end - 1), // Stake's endDate is inclusive
   }).toString()
@@ -179,7 +179,7 @@ async function fetchPlatform(
  * names masked. Players with nothing counted yet are left out, so they never
  * sit in a paying place ahead of an empty slot.
  */
-export function rankEntries(rows: Row[], prizes: number[] = PRIZES, hidden?: Set<string>): LeaderboardEntry[] {
+export function rankEntries(rows: Row[], prizes: number[], hidden?: Set<string>): LeaderboardEntry[] {
   const amountOf = (row: Row) => (RANK_BY === 'weighted' ? row.weighted : row.wagered)
   return rows
     .filter((row) => row.name && amountOf(row) > 0)
@@ -238,7 +238,8 @@ async function buildLeaderboard(tokens: Tokens, options: FetchOptions): Promise<
     throw new LeaderboardError(anyConfigured ? 'Stake unavailable' : 'Leaderboard is not configured', anyConfigured ? 502 : 503)
   }
 
-  const data: LeaderboardResponse = { window, entries: rankEntries(rows, PRIZES, tokens.hidden), prizes: PRIZES, sources, updatedAt: now }
+  const prizes = prizesFor(window.start)
+  const data: LeaderboardResponse = { window, entries: rankEntries(rows, prizes, tokens.hidden), prizes, sources, updatedAt: now }
   // Only a fully fresh board is kept for the whole minute; otherwise Stake is asked again sooner
   const fresh = platforms.every((p) => sources[p] === 'ok' || sources[p] === 'unconfigured')
   cache.set(window.start, { at: fresh ? now : now - CACHE_TTL_MS + 15_000, data })

@@ -95,13 +95,15 @@ export function TermsPage() {
         <h2>How the leaderboard works</h2>
         <p>
           There is one board. Players under the code {CODE} on Stake.com and on Stake.us are ranked together. A
-          race runs for one calendar month, from the 1st at 00:00 UTC until the next 1st at 00:00 UTC, and the
-          next one starts straight away. The countdown on the leaderboard page shows when the current race ends.
+          race runs from the 16th of a month at 00:00 UTC until the end of the 15th of the next month (the 16th at
+          00:00 UTC), and the next one starts at that same moment. The countdown on the leaderboard page shows when
+          the current race ends. Finished races and their winners stay on the leaderboard page under Past
+          Leaderboards.
         </p>
         <p>
           Players are ranked by the amount Stake's affiliate reporting counts for them. Stake weights wagers by
           game, so games with a higher return to player count for less. The top {PRIZES.length} places are paid,
-          from a pool of ${prizePool().toLocaleString('en-US')} a month. Usernames on the board are partly
+          from a pool of ${prizePool().toLocaleString('en-US')} per race. Usernames on the board are partly
           hidden.
         </p>
         <p>
@@ -116,10 +118,10 @@ export function TermsPage() {
         <h2>Prizes</h2>
         <ul>
           <li>
-            Prizes are paid by Trevor Abney after the month ends and the figures settle. They don't come from
+            Prizes are paid by Trevor Abney after the race ends and the figures settle. They don't come from
             your Stake balance and are not a Stake promotion.
           </li>
-          <li>The prize for each place is the one shown on the board for that month.</li>
+          <li>The prize for each place is the one shown on the board for that race.</li>
           <li>
             To be paid, you need to be reachable: message Trevor on <X /> or <Discord /> with the username shown
             on the board. If a winner can't be reached within 30 days of the result, the prize may be forfeited.
@@ -137,7 +139,7 @@ export function TermsPage() {
         <h2>Promotions can change</h2>
         <p>
           The prize pool, the number of paid places and the leaderboard itself can change or end. The current
-          version of the page is the one that applies. If a change affects a month already running, we won't
+          version of the page is the one that applies. If a change affects a race already running, we won't
           reduce what was on offer part-way through.
         </p>
       </section>

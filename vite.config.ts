@@ -4,6 +4,7 @@ import react from '@vitejs/plugin-react'
 import { handleLeaderboardRequest, tokensFromEnv } from './server/stakeLeaderboard.js'
 import type { Tokens } from './server/stakeLeaderboard.js'
 import { handleKickRequest } from './server/kick.js'
+import { handleArchiveRequest } from './server/leaderboardArchive.js'
 import { clientIp, handleContactRequest, readJson } from './server/contact.js'
 
 /**
@@ -14,12 +15,14 @@ import { clientIp, handleContactRequest, readJson } from './server/contact.js'
 function leaderboardApi(tokens: Tokens, env: Record<string, string>): Plugin {
   const middleware: Connect.NextHandleFunction = async (req, res, next) => {
     const url = new URL(req.url ?? '/', 'http://localhost')
-    if (!['/api/leaderboard', '/api/kick', '/api/contact'].includes(url.pathname)) return next()
+    if (!['/api/leaderboard', '/api/leaderboard-archive', '/api/kick', '/api/contact'].includes(url.pathname)) return next()
 
     const { status, body } =
       url.pathname === '/api/contact'
         ? await handleContactRequest(req.method, req.method === 'POST' ? await readJson(req) : undefined, clientIp(req), env)
-        : url.pathname === '/api/kick'
+        : url.pathname === '/api/leaderboard-archive'
+          ? await handleArchiveRequest(url.searchParams.get('race'), tokens)
+          : url.pathname === '/api/kick'
           ? await handleKickRequest()
           : await handleLeaderboardRequest(tokens)
     res.statusCode = status

@@ -17,9 +17,16 @@ export default async function handler(_req: IncomingMessage, res: ServerResponse
   // Shared CDN cache: Stake is called at most about once a minute. A board that is missing a
   // site's fresh standings is only kept briefly, so the fresh one returns as soon as Stake answers
   const partial = 'sources' in body && Object.values(body.sources).some((s) => s === 'error' || s === 'stale')
-  res.setHeader(
-    'Cache-Control',
-    status !== 200 ? 'no-store' : partial ? 'public, s-maxage=15' : 'public, s-maxage=60, stale-while-revalidate=300',
-  )
+  // Close to the end of a race the answer is kept only until that moment, so the new race shows straight away
+  const left = 'window' in body ? Math.floor((body.window.end - Date.now()) / 1000) : Infinity
+  const cache =
+    status !== 200
+      ? 'no-store'
+      : left < 360
+        ? `public, s-maxage=${Math.max(1, Math.min(15, left))}`
+        : partial
+          ? 'public, s-maxage=15'
+          : 'public, s-maxage=60, stale-while-revalidate=300'
+  res.setHeader('Cache-Control', cache)
   res.end(JSON.stringify(body))
 }

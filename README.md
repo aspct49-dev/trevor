@@ -25,8 +25,11 @@ leaderboard works locally as long as `api.stake.com` / `api.stake.us` are reacha
 - `api/leaderboard.ts` — Vercel Function; `server/stakeLeaderboard.ts` — calls Stake's affiliate
   leaderboard API for Stake.com and Stake.us, ranks both together, masks names and attaches prizes.
   Tokens never reach the browser; full usernames never leave the server (`TrevorAbney` → `TrevorAb***`).
-- `shared/leaderboard.ts` — prizes per place, number of places, ranking amount and the race window
-  (calendar month, UTC). Change prizes or dates here.
+- `shared/leaderboard.ts` — prizes per place, number of places, ranking amount and the race dates:
+  the 16th of a month to the 15th of the next, in UTC. Change prizes or dates here.
+- `server/leaderboardArchive.ts` (`/api/leaderboard-archive`) — past leaderboards. Nothing is stored:
+  a finished race is read from Stake for its exact dates, so it appears the moment it ends. The first
+  race counted is `FIRST_RACE_START` (16 November 2026).
 - `shared/site.ts` — code, Stake links and social handles.
 
 If one platform can't be reached, the board shows the other and says so; Stake is called at most
