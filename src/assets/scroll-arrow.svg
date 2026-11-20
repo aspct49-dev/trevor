@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="18.4099" height="24.5" viewBox="0 0 18.4099 24.5" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Group 24">
+<g id="Arrow 1">
+<use xlink:href="#stroke0_0_4" fill="url(#paint0_linear_0_4)"/>
+<use xlink:href="#stroke0_0_4" fill="#6D7A96"/>
+</g>
+</g>
+<defs>
+<linearGradient id="paint0_linear_0_4" x1="8.16745" y1="1.25" x2="17.8963" y2="6.05087" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0491C9"/>
+<stop offset="0.274038" stop-color="#4DB0D7"/>
+<stop offset="1" stop-color="#0491C9"/>
+</linearGradient>
+<path id="stroke0_0_4" d="M10.455 1.25C10.455 0.559644 9.89531 3.01764e-08 9.20495 0C8.5146 -3.01764e-08 7.95495 0.559644 7.95495 1.25L9.20495 1.25L10.455 1.25ZM9.20495 1.25L7.95495 1.25L7.95495 23.25L9.20495 23.25L10.455 23.25L10.455 1.25L9.20495 1.25ZM8.32107 24.1339C8.80922 24.622 9.60068 24.622 10.0888 24.1339L18.0438 16.1789C18.5319 15.6908 18.5319 14.8993 18.0438 14.4112C17.5556 13.923 16.7642 13.923 16.276 14.4112L9.20495 21.4822L2.13388 14.4112C1.64573 13.923 0.854272 13.923 0.366117 14.4112C-0.122038 14.8993 -0.122039 15.6908 0.366117 16.1789L8.32107 24.1339Z"/>
+</defs>
+</svg>

@@ -1,0 +1,16 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="44.1673" height="48.8073" viewBox="0 0 44.1673 48.8073" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g id="Polygon 3" filter="url(#filter0_i_0_32)">
+<path d="M20.1133 0.51896C21.3357 -0.172987 22.8316 -0.172987 24.054 0.518961L42.1377 10.7548C43.3919 11.4648 44.1673 12.7946 44.1673 14.2359V34.5715C44.1673 36.0127 43.3919 37.3425 42.1377 38.0525L24.054 48.2884C22.8316 48.9803 21.3357 48.9803 20.1133 48.2884L2.02963 38.0525C0.775358 37.3425 0 36.0127 0 34.5715V14.2359C0 12.7946 0.775356 11.4648 2.02963 10.7548L20.1133 0.51896Z" fill="#2C2C40"/>
+</g>
+<defs>
+<filter id="filter0_i_0_32" x="0" y="0" width="44.1673" height="48.8073" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.279308 0 0 0 0 0.279308 0 0 0 0 0.365385 0 0 0 1 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_0_32"/>
+</filter>
+</defs>
+</svg>

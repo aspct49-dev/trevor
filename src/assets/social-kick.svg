@@ -1,0 +1,39 @@
+<svg preserveAspectRatio="none" overflow="visible" style="display: block;" width="54" height="73" viewBox="0 0 54 73" fill="none" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+<g id="Kick Game Livestream 1" filter="url(#filter0_i_0_6)">
+<g clip-path="url(#clip0_0_6)">
+<g id="Vector" filter="url(#filter1_i_0_6)">
+<use xlink:href="#stroke0_0_6" fill="#53FC18"/>
+<use xlink:href="#stroke0_0_6" fill="url(#paint0_linear_0_6)"/>
+</g>
+</g>
+</g>
+<defs>
+<filter id="filter0_i_0_6" x="0" y="0" width="54" height="73" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dx="0.476443" dy="0.476443"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.3 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_0_6"/>
+</filter>
+<filter id="filter1_i_0_6" x="-0.121216" y="1.97302" width="189.091" height="65.1081" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feBlend mode="normal" in="SourceGraphic" in2="BackgroundImageFix" result="shape"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dy="1"/>
+<feComposite in2="hardAlpha" operator="arithmetic" k2="-1" k3="1"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0.759615 0 0 0 0 0.932575 0 0 0 0 1 0 0 0 1 0"/>
+<feBlend mode="normal" in2="shape" result="effect1_innerShadow_0_6"/>
+</filter>
+<linearGradient id="paint0_linear_0_6" x1="-0.121216" y1="34.5271" x2="188.97" y2="34.5271" gradientUnits="userSpaceOnUse">
+<stop stop-color="#0491C9"/>
+<stop offset="0.274038" stop-color="#58BCE3"/>
+<stop offset="1" stop-color="#0491C9"/>
+</linearGradient>
+<clipPath id="clip0_0_6">
+<rect width="54" height="73" fill="white"/>
+</clipPath>
+<path id="stroke0_0_6" d="M-0.121216 1.97302H20.1441V16.4385H26.8992V9.21923H33.6543V1.99996H53.9197V23.6847H47.1646V30.904H40.4094V38.1232H47.1646V45.3425H53.9197V67.0273H33.6543V59.8349H26.8992V52.6157H20.1441V67.0811H-0.121216V1.97302ZM134.929 1.97302H155.194V16.4385H161.949V9.21923H168.704V1.99996H188.97V23.6847H182.189V30.904H175.433V38.1232H182.189V45.3425H188.944V67.0273H168.678V59.8349H161.923V52.6157H155.168V67.0811H134.903V1.97302H134.929ZM60.6487 1.97302H80.914V67.0542H60.6487V1.97302ZM107.908 1.97302H94.3982V9.19229H87.6431V59.8349H94.3982V67.0542H107.908H128.174V45.3694H107.908V23.6847H128.174V1.99996H107.908V1.97302Z" fill-rule="evenodd" clip-rule="evenodd"/>
+</defs>
+</svg>
