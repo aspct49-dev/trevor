@@ -1,6 +1,6 @@
 /*
- * Site-wide links and copy. Handles are taken from the Figma design —
- * check them (especially the Discord invite) before going live.
+ * Site-wide links and copy. Handles are taken from the Figma design and
+ * confirmed by Trevor's team.
  */
 
 export const CODE = 'TREV'
@@ -41,7 +41,7 @@ export type Social = {
 export const SOCIALS: Social[] = [
   { id: 'x', name: 'TWITTER', label: 'X / Twitter', handle: '@thetrevorabney', url: 'https://x.com/thetrevorabney', cta: 'CLICK HERE' },
   { id: 'instagram', name: 'INSTAGRAM', label: 'Instagram', handle: '@trevor_abney', url: 'https://www.instagram.com/trevor_abney', cta: 'CLICK HERE' },
-  { id: 'discord', name: 'DISCORD', label: 'Discord', handle: './trevorabney', url: 'https://discord.gg/trevorabney', cta: 'CLICK HERE' },
+  { id: 'discord', name: 'DISCORD', label: 'Discord', handle: './trevorabney', url: 'https://discord.gg/GmpuXrhkn', cta: 'CLICK HERE' },
   { id: 'kick', name: 'KICK.COM', label: 'Kick', handle: `@${KICK_CHANNEL}`, url: `https://kick.com/${KICK_CHANNEL}`, cta: 'WATCH HERE' },
   { id: 'tiktok', name: 'TIK TOK', label: 'TikTok', handle: `@${TIKTOK_HANDLE}`, url: `https://www.tiktok.com/@${TIKTOK_HANDLE}`, cta: 'CLICK HERE' },
 ]

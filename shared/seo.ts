@@ -76,12 +76,13 @@ export const pageSeo = (path: string): PageSeo => PAGES[path] ?? NOT_FOUND
 /** "/leaderboard" → "https://site/leaderboard"; the home page keeps its trailing slash */
 export const absoluteUrl = (siteUrl: string, path: string) => `${siteUrl}${path === '/' ? '/' : path}`
 
-/** Profiles confirmed for Trevor (the Discord invite is not confirmed yet, so it is left out) */
+/** Trevor's confirmed profiles */
 const SAME_AS = [
   `https://kick.com/${KICK_CHANNEL}`,
   'https://x.com/thetrevorabney',
   'https://www.instagram.com/trevor_abney',
   `https://www.tiktok.com/@${TIKTOK_HANDLE}`,
+  'https://discord.gg/GmpuXrhkn',
 ]
 
 const escapeHtml = (s: string) =>
