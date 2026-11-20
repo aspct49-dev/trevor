@@ -18,7 +18,7 @@ leaderboard works locally as long as `api.stake.com` / `api.stake.us` are reacha
 
 1. Import the project; the Vite preset and defaults are fine (build `npm run build`, output `dist`).
 2. Add `STAKE_COM_API_TOKEN` and `STAKE_US_API_TOKEN` under Project → Settings → Environment Variables.
-3. Deploy. `vercel.json` sends every page to the app and leaves `/api/*` to the function.
+3. Deploy. Each page is served from its own pre-rendered file; `/api/*` are Vercel Functions.
 
 ## Leaderboard
 
@@ -31,6 +31,32 @@ leaderboard works locally as long as `api.stake.com` / `api.stake.us` are reacha
 
 If one platform can't be reached, the board shows the other and says so; Stake is called at most
 about once a minute.
+
+## Search engines and sharing
+
+`npm run build` builds the app twice (browser and server) and then `scripts/prerender.mjs` writes a
+ready-made HTML file for every page, so crawlers and link previews get real content without running
+JavaScript. In the browser the app attaches to that HTML (hydration).
+
+- `shared/seo.ts` holds each page's title, description and breadcrumb name, and builds the canonical
+  link, Open Graph / X card tags and structured data (Organization, WebSite, BreadcrumbList).
+  Add a page there and it is pre-rendered and listed in `sitemap.xml` automatically.
+- The build also writes `robots.txt`, `sitemap.xml` and `404.html` (served with a 404 status).
+- The site address comes from `SITE_URL`, else the Vercel production domain, else the default in
+  `shared/seo.ts`. Set `SITE_URL` in Vercel when a custom domain goes live.
+- `vercel.json`: clean addresses, no trailing slashes, 301 redirects for likely alternates
+  (`/signup`, `/socials`, `/tos` and so on), long caching for hashed assets and basic security headers.
+- Google Search Console: set `GOOGLE_SITE_VERIFICATION` to the "HTML tag" value, redeploy, verify,
+  then submit `/sitemap.xml`.
+- Google Analytics 4: set `VITE_GA_MEASUREMENT_ID` and redeploy. Visitors are asked first
+  (`ConsentBanner`); nothing loads from Google until they accept. Without the ID no analytics code ships.
+
+## Contact form
+
+`/contact` posts to `/api/contact` (`server/contact.ts`), which checks the message and forwards it to
+a Discord channel through `CONTACT_DISCORD_WEBHOOK`. Without that variable the page shows the socials
+instead of the form. Spam protection: a hidden trap field, a minimum time on the form, length limits
+and a per-address rate limit.
 
 ## Legal
 

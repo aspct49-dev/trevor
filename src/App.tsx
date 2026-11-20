@@ -1,31 +1,43 @@
 import { useEffect } from 'react'
-import { Navigate, Route, Routes, useLocation } from 'react-router'
+import { Route, Routes, useLocation } from 'react-router'
+import { PAGES, pageSeo } from '../shared/seo'
+import { initAnalytics, trackPageView } from './analytics'
 import { Navbar } from './components/Navbar'
 import { Footer } from './components/Footer'
+import { ConsentBanner } from './components/ui'
 import { HomePage } from './pages/HomePage'
 import { LeaderboardPage } from './pages/LeaderboardPage'
 import { SignUpPage } from './pages/SignUpPage'
 import { MediaPage } from './pages/MediaPage'
+import { ContactPage } from './pages/ContactPage'
 import { PrivacyPage, TermsPage } from './pages/LegalPages'
+import { NotFoundPage } from './pages/NotFoundPage'
 import { useScrollReveal } from './hooks'
 
-const TITLES: Record<string, string> = {
-  '/': 'Trevor Abney — $50,000 Monthly Leaderboard',
-  '/leaderboard': 'Leaderboard — Trevor Abney',
-  '/how-to-sign-up': 'How to Sign Up — Trevor Abney',
-  '/media': 'Media — Trevor Abney',
-  '/terms': 'Terms of Service — Trevor Abney',
-  '/privacy': 'Privacy Policy — Trevor Abney',
-}
-
-/** New page: start at the top (or at #anchor) and update the tab title */
+/**
+ * On every page change: keep the title, description and canonical link in
+ * step with the page (each page's own HTML already carries them on first
+ * load), count the page view, and start at the top or at the #anchor.
+ */
 function useRouteEffects() {
   const { pathname, hash } = useLocation()
+
+  useEffect(() => initAnalytics(), [])
+
   useEffect(() => {
-    document.title = TITLES[pathname] ?? TITLES['/']
+    const seo = pageSeo(pathname)
+    document.title = seo.title
+    document.querySelector('meta[name="description"]')?.setAttribute('content', seo.description)
+    const canonical = document.querySelector<HTMLLinkElement>('link[rel="canonical"]')
+    if (canonical && pathname in PAGES) canonical.href = new URL(pathname, canonical.href).href
+    trackPageView(pathname, seo.title)
+  }, [pathname])
+
+  useEffect(() => {
     if (hash) document.getElementById(hash.slice(1))?.scrollIntoView()
     else window.scrollTo(0, 0)
   }, [pathname, hash])
+
   return pathname
 }
 
@@ -42,12 +54,14 @@ export default function App() {
           <Route path="/leaderboard" element={<LeaderboardPage />} />
           <Route path="/how-to-sign-up" element={<SignUpPage />} />
           <Route path="/media" element={<MediaPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="/terms" element={<TermsPage />} />
           <Route path="/privacy" element={<PrivacyPage />} />
-          <Route path="*" element={<Navigate to="/" replace />} />
+          <Route path="*" element={<NotFoundPage />} />
         </Routes>
       </div>
       <Footer />
+      <ConsentBanner />
     </>
   )
 }

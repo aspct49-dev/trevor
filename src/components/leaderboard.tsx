@@ -4,7 +4,7 @@ import { PLATFORMS } from '../../shared/leaderboard'
 import type { LeaderboardEntry } from '../../shared/leaderboard'
 import { formatUsd, useCountdown, useHoverAnimation } from '../hooks'
 
-import cardTexture from '../assets/card-texture.png'
+import cardTexture from '../assets/card-texture.webp'
 import avatar1st from '../assets/avatar-1st.webp'
 import avatar2nd from '../assets/avatar-2nd.webp'
 import avatar3rd from '../assets/avatar-3rd.webp'
@@ -40,11 +40,14 @@ export function PodiumCard({
   entry,
   prize,
   style,
+  lazy = false,
 }: {
   place: 1 | 2 | 3
   entry?: Pick<LeaderboardEntry, 'name' | 'amount' | 'platform'>
   prize: number
   style?: CSSProperties
+  /** Below the first screen: let the browser fetch the pictures when they come near */
+  lazy?: boolean
 }) {
   const { label, variant, avatars } = PLACES[place]
   const { handlers, hoverClass } = useHoverAnimation()
@@ -56,7 +59,7 @@ export function PodiumCard({
       {...handlers}
     >
       <div className="pcard__bg" aria-hidden>
-        <img src={cardTexture} alt="" />
+        <img src={cardTexture} alt="" loading={lazy ? 'lazy' : undefined} decoding="async" />
       </div>
       <div className="pcard__head">
         <img src={trophyCard} alt="" />
@@ -64,7 +67,7 @@ export function PodiumCard({
       </div>
       <div className="pcard__avatar">
         {avatars.map((src) => (
-          <img key={src} src={src} alt="" />
+          <img key={src} src={src} alt="" loading={lazy ? 'lazy' : undefined} decoding="async" />
         ))}
       </div>
       <p className="pcard__name" title={entry ? PLATFORMS[entry.platform].label : undefined}>
@@ -111,7 +114,7 @@ export function Podium({
       {([2, 1, 3] as const).map((place) => (
         // 1st rises first, then 2nd, then 3rd
         <div key={place} className={`podium__slot podium__slot--${place}`} data-reveal="up" style={{ '--reveal-delay': `${(place - 1) * 120}ms` } as CSSProperties}>
-          <PodiumCard place={place} entry={entries[place - 1]} prize={prizes[place - 1] ?? 0} />
+          <PodiumCard place={place} entry={entries[place - 1]} prize={prizes[place - 1] ?? 0} lazy={compact} />
         </div>
       ))}
     </div>
@@ -121,12 +124,13 @@ export function Podium({
 /* ——————————————————————— Countdown ——————————————————————— */
 
 export function Countdown({ end }: { end: number }) {
-  const { days, hours, minutes, seconds } = useCountdown(end)
-  const units: [number, string][] = [
-    [days, 'DAYS'],
-    [hours, 'HRS'],
-    [minutes, 'MIN'],
-    [seconds, 'SEC'],
+  const left = useCountdown(end)
+  // A dash until the clock starts in the browser (the pre-rendered page has no "now")
+  const units: [number | string, string][] = [
+    [left ? left.days : '–', 'DAYS'],
+    [left ? left.hours : '–', 'HRS'],
+    [left ? left.minutes : '–', 'MIN'],
+    [left ? left.seconds : '–', 'SEC'],
   ]
   return (
     <section className="countdown" aria-label="Leaderboard ends in" data-reveal="up">
@@ -169,7 +173,7 @@ function Row({ place, entry, prize, reveal = true }: { place: number; entry?: Le
         <span className={place >= 10 ? 'rank-row__num rank-row__num--2' : 'rank-row__num'}>{place}</span>
       </span>
       <span className="rank-row__user" role="cell" title={entry ? PLATFORMS[entry.platform].label : undefined}>
-        <img src={avatarRow} alt="" width={30} height={30} />
+        <img src={avatarRow} alt="" width={30} height={30} loading="lazy" decoding="async" />
         <span>{entry?.name ?? '—'}</span>
       </span>
       <span className="rank-row__amount" role="cell">

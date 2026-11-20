@@ -1,5 +1,5 @@
 import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
+import { createRoot, hydrateRoot } from 'react-dom/client'
 import { BrowserRouter } from 'react-router'
 // Fonts are served by the site itself (no requests to Google Fonts)
 import '@fontsource/exo-2/latin-600.css'
@@ -16,12 +16,18 @@ import './styles.css'
 import App from './App'
 import { ToastProvider } from './components/ui'
 
-createRoot(document.getElementById('root')!).render(
+const root = document.getElementById('root')!
+const app = (
   <StrictMode>
     <BrowserRouter>
       <ToastProvider>
         <App />
       </ToastProvider>
     </BrowserRouter>
-  </StrictMode>,
+  </StrictMode>
 )
+
+// Built pages arrive already rendered (scripts/prerender.mjs): attach to that HTML.
+// The dev server sends an empty page: render from scratch.
+if (root.firstElementChild) hydrateRoot(root, app)
+else createRoot(root).render(app)

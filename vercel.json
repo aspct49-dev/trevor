@@ -1,4 +1,124 @@
 {
   "$schema": "https://openapi.vercel.sh/vercel.json",
-  "rewrites": [{ "source": "/((?!api/).*)", "destination": "/index.html" }]
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "redirects": [
+    {
+      "source": "/home",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/index",
+      "destination": "/",
+      "statusCode": 301
+    },
+    {
+      "source": "/lb",
+      "destination": "/leaderboard",
+      "statusCode": 301
+    },
+    {
+      "source": "/leaderboards",
+      "destination": "/leaderboard",
+      "statusCode": 301
+    },
+    {
+      "source": "/signup",
+      "destination": "/how-to-sign-up",
+      "statusCode": 301
+    },
+    {
+      "source": "/sign-up",
+      "destination": "/how-to-sign-up",
+      "statusCode": 301
+    },
+    {
+      "source": "/register",
+      "destination": "/how-to-sign-up",
+      "statusCode": 301
+    },
+    {
+      "source": "/how-to-signup",
+      "destination": "/how-to-sign-up",
+      "statusCode": 301
+    },
+    {
+      "source": "/socials",
+      "destination": "/media",
+      "statusCode": 301
+    },
+    {
+      "source": "/videos",
+      "destination": "/media",
+      "statusCode": 301
+    },
+    {
+      "source": "/stream",
+      "destination": "/media",
+      "statusCode": 301
+    },
+    {
+      "source": "/tos",
+      "destination": "/terms",
+      "statusCode": 301
+    },
+    {
+      "source": "/terms-of-service",
+      "destination": "/terms",
+      "statusCode": 301
+    },
+    {
+      "source": "/rules",
+      "destination": "/terms",
+      "statusCode": 301
+    },
+    {
+      "source": "/privacy-policy",
+      "destination": "/privacy",
+      "statusCode": 301
+    },
+    {
+      "source": "/contact-us",
+      "destination": "/contact",
+      "statusCode": 301
+    },
+    {
+      "source": "/support",
+      "destination": "/contact",
+      "statusCode": 301
+    }
+  ],
+  "headers": [
+    {
+      "source": "/assets/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "SAMEORIGIN"
+        },
+        {
+          "key": "Permissions-Policy",
+          "value": "camera=(), microphone=(), geolocation=()"
+        }
+      ]
+    }
+  ]
 }

@@ -2,6 +2,8 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import type { CSSProperties, ReactNode } from 'react'
 import { Link } from 'react-router'
 import { CODE, MIN_AGE, STAKE_COM_URL, STAKE_US_URL, external } from '../../shared/site'
+import { GA_ID, getConsent, setConsent, trackEvent } from '../analytics'
+import type { Consent } from '../analytics'
 import { ToastContext, copyText, useHoverAnimation, useToast } from '../hooks'
 
 import copyIcon from '../assets/copy.svg'
@@ -29,7 +31,12 @@ import lineRight from '../assets/line-right.svg'
 export function VisitButton({ platform }: { platform: 'com' | 'us' }) {
   const us = platform === 'us'
   return (
-    <a className="btn btn--blue visit-btn" href={us ? STAKE_US_URL : STAKE_COM_URL} {...external}>
+    <a
+      className="btn btn--blue visit-btn"
+      href={us ? STAKE_US_URL : STAKE_COM_URL}
+      {...external}
+      onClick={() => trackEvent('visit_stake', { platform })}
+    >
       <span>VISIT</span>
       <span className="visit-btn__logo">
         <img src={us ? stakeUsSmall : stakeSmall} alt={us ? 'Stake.us' : 'Stake'} />
@@ -88,6 +95,7 @@ export function CodeBox() {
         window.clearTimeout(timer.current)
         setCopied(true)
         timer.current = window.setTimeout(() => setCopied(false), 1200)
+        trackEvent('copy_code')
         show(
           <>
             Code <span className="toast__accent">{CODE}</span> copied to clipboard
@@ -129,6 +137,59 @@ export function AffiliateNote({ className = '' }: { className?: string }) {
       {MIN_AGE}+ only. Trevor earns a commission when you sign up with his code.{' '}
       <Link to="/terms">Terms apply</Link>. Play responsibly.
     </p>
+  )
+}
+
+/** "Home / Page": the trail shown on the text pages; the same trail is in each page's structured data */
+export function Breadcrumbs({ current }: { current: string }) {
+  return (
+    <nav className="crumbs" aria-label="Breadcrumb">
+      <ol>
+        <li>
+          <Link to="/">Home</Link>
+        </li>
+        <li aria-current="page">{current}</li>
+      </ol>
+    </nav>
+  )
+}
+
+/**
+ * Asks before Google Analytics is used. Only exists when the site was built
+ * with a measurement ID (VITE_GA_MEASUREMENT_ID); nothing is loaded from
+ * Google until "Accept". The footer's "Cookie settings" reopens it.
+ */
+export function ConsentBanner() {
+  const [open, setOpen] = useState(false)
+
+  useEffect(() => {
+    if (!GA_ID) return
+    if (getConsent() === null) setOpen(true)
+    const reopen = () => setOpen(true)
+    window.addEventListener('trevor:cookie-settings', reopen)
+    return () => window.removeEventListener('trevor:cookie-settings', reopen)
+  }, [])
+
+  if (!GA_ID || !open) return null
+  const choose = (choice: Exclude<Consent, null>) => {
+    setConsent(choice)
+    setOpen(false)
+  }
+  return (
+    <div className="consent" role="dialog" aria-label="Analytics cookies">
+      <p>
+        We would like to use Google Analytics to count visits and see which pages are used. It sets cookies only if
+        you accept. <Link to="/privacy">Privacy Policy</Link>
+      </p>
+      <div className="consent__actions">
+        <button type="button" className="ranking__more consent__btn" onClick={() => choose('denied')}>
+          DECLINE
+        </button>
+        <button type="button" className="btn btn--blue consent__btn" onClick={() => choose('granted')}>
+          ACCEPT
+        </button>
+      </div>
+    </div>
   )
 }
 

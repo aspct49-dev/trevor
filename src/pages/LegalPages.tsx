@@ -2,6 +2,8 @@ import type { ReactNode } from 'react'
 import { Link } from 'react-router'
 import { PRIZES, prizePool } from '../../shared/leaderboard'
 import { CODE, HELPLINE, MIN_AGE, external, socialUrl } from '../../shared/site'
+import { GA_ID } from '../analytics'
+import { Breadcrumbs } from '../components/ui'
 
 /** Shown at the top of both pages; change it whenever the wording below changes */
 const LAST_UPDATED = '20 November 2026'
@@ -9,6 +11,7 @@ const LAST_UPDATED = '20 November 2026'
 function LegalPage({ title, intro, children }: { title: string; intro: string; children: ReactNode }) {
   return (
     <main className="legal">
+      <Breadcrumbs current={title} />
       <header className="legal__head">
         <h1 className="legal__title grad-silver">{title}</h1>
         <p className="legal__intro">{intro}</p>
@@ -192,7 +195,8 @@ export function TermsPage() {
       <section>
         <h2>Getting in touch</h2>
         <p>
-          The quickest way to reach us about anything on this page is a message on <X /> or <Discord />.
+          The quickest way to reach us about anything on this page is the <Link to="/contact">contact form</Link>
+          , or a message on <X /> or <Discord />.
           Anything about your Stake.com or Stake.us account itself, such as deposits, redemptions, verification
           or self-exclusion, has to go to that site's support team, because we have no access to it.
         </p>
@@ -213,9 +217,12 @@ export function PrivacyPage() {
       <section>
         <h2>The short version</h2>
         <p>
-          You can use this whole site without telling us anything. There are no accounts, no forms, no
-          advertising trackers and no analytics. The site sets no cookies of its own. We sell nothing to
-          anybody.
+          You can browse this whole site without telling us anything. There are no accounts and no advertising
+          trackers, and the site sets no cookies of its own.{' '}
+          {GA_ID
+            ? 'Visits are counted with Google Analytics only if you accept that in the banner.'
+            : 'There is no analytics.'}{' '}
+          If you use the contact form, we receive what you type into it. We sell nothing to anybody.
         </p>
       </section>
 
@@ -271,10 +278,36 @@ export function PrivacyPage() {
       </section>
 
       <section>
+        <h2>If you send us a message</h2>
+        <p>
+          The <Link to="/contact">contact form</Link> asks for a message and a way to reply (an email address, or
+          a Kick, X or Discord username), and optionally your name. What you type is forwarded to a private
+          Discord channel that Trevor's team reads, so Discord processes it under its own privacy policy. This
+          site keeps no copy. To stop repeat submissions, the server briefly remembers the address a message came
+          from; that is not saved anywhere.
+        </p>
+      </section>
+
+      {GA_ID && (
+        <section>
+          <h2>Analytics</h2>
+          <p>
+            The site uses Google Analytics 4 to count visits and see which pages and buttons are used. It loads
+            only after you accept it in the banner shown on your first visit. If you decline, or never answer, no
+            analytics code runs and no analytics cookies are set. Your choice is saved in your browser (an entry
+            named <code>trevor-consent</code>), and you can change it at any time with the "Cookie settings" link
+            at the bottom of every page. If you accept, Google receives your IP address, browser details and the
+            pages you view, under Google's privacy policy.
+          </p>
+        </section>
+      )}
+
+      <section>
         <h2>Having something removed</h2>
         <p>
           If you want your name hidden on the leaderboard (your place stays, shown as “Hidden”), or have any
-          question about this page, message Trevor on <X /> or <Discord /> with your Stake username. For the data Stake.com or Stake.us holds
+          question about this page, use the <Link to="/contact">contact form</Link> or message Trevor on <X /> or{' '}
+          <Discord /> with your Stake username. For the data Stake.com or Stake.us holds
           about your account, contact that site directly; we have no access to it.
         </p>
       </section>

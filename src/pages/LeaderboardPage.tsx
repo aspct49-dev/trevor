@@ -57,7 +57,8 @@ export function LeaderboardPage() {
         Stake.com and Stake.us players under code {CODE} are ranked together.{' '}
         {RANK_BY === 'weighted' && 'Wagers are weighted by game RTP, as on Stake. '}
         The race resets on the 1st of every month at 00:00 UTC; standings update every minute.{' '}
-        <Link to="/terms#leaderboard">Leaderboard rules</Link>
+        <Link to="/terms#leaderboard">Leaderboard rules</Link>. New here? See{' '}
+        <Link to="/how-to-sign-up">how to sign up</Link>.
       </p>
     </main>
   )

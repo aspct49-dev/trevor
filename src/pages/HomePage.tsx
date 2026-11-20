@@ -18,7 +18,7 @@ import { SocialsSection } from '../components/sections'
 import bgHome from '../assets/bg-home.webp'
 import bgStake from '../assets/bg-stake.webp'
 import logo from '../assets/logo.webp'
-import logoMask from '../assets/logo-mask.png'
+import logoMask from '../assets/logo-mask.webp'
 import logoGlow from '../assets/logo-glow.svg'
 import scrollArrow from '../assets/scroll-arrow.svg'
 import sectionTrophy from '../assets/section-trophy.svg'
@@ -43,7 +43,7 @@ export function HomePage() {
             aria-hidden
           />
           <h1 className="home-hero__logo">
-            <img src={logo} alt="The Trevor Abney" width={548} height={286} />
+            <img src={logo} alt="The Trevor Abney" width={548} height={286} fetchPriority="high" />
           </h1>
           <FloatingSymbol className="home-hero__plat" rotation={-6.57} idle={0.6}>
             <PlatBadge />
@@ -75,7 +75,7 @@ export function HomePage() {
       </div>
 
       <section id="leaderboard" className="home-lb">
-        <img className="page-bg home-lb__bg" src={bgStake} alt="" />
+        <img className="page-bg home-lb__bg" src={bgStake} alt="" loading="lazy" decoding="async" />
         <div data-reveal="fade">
           <PartnerLogos />
         </div>
@@ -92,7 +92,7 @@ export function HomePage() {
         </div>
         <div className="home-lb__podium">
           <Podium entries={data?.entries ?? []} prizes={prizes} compact />
-          <img className="home-lb__fade" src={podiumFade} alt="" />
+          <img className="home-lb__fade" src={podiumFade} alt="" loading="lazy" decoding="async" />
         </div>
       </section>
 

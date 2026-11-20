@@ -3,16 +3,23 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Trevor Abney — $50,000 Monthly Leaderboard</title>
-    <meta
-      name="description"
-      content="Sign up on Stake or Stake.us under code TREVOR and climb the $50,000 monthly leaderboard."
-    />
+    <!-- Title, description, canonical link, share tags and structured data: written per page by the build
+         (scripts/prerender.mjs, shared/seo.ts). What is here is only what the dev server shows. -->
+    <!--seo--><title>Trevor Abney</title>
+    <meta name="description" content="Trevor Abney's official site and monthly Stake leaderboard." /><!--/seo-->
     <meta name="theme-color" content="#0f0f14" />
     <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/logo.png" />
+    <script>
+      // Scroll animations keep elements hidden until they scroll into view. Mark the page before the
+      // first paint, so the pre-rendered content doesn't show and then blink out when the app starts.
+      if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        document.documentElement.classList.add('reveal-ready')
+      }
+    </script>
   </head>
   <body>
-    <div id="root"></div>
+    <div id="root"><!--app--></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
 </html>

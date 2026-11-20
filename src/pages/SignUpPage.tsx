@@ -10,7 +10,7 @@ import signupArc from '../assets/signup-arc.svg'
 import lineLeft from '../assets/signup-line-left.svg'
 import lineRight from '../assets/signup-line-right.svg'
 import stakeScreenshot from '../assets/stake-screenshot.webp'
-import registerForm from '../assets/register-form.png'
+import registerForm from '../assets/register-form.webp'
 
 function Step({ n, lines, glow = false, banded = false }: { n: number; lines: [ReactNode, ReactNode]; glow?: boolean; banded?: boolean }) {
   return (
@@ -53,7 +53,7 @@ export function SignUpPage() {
 
       <Step n={1} lines={['Visit', 'Stake.com']} banded />
       <a className="signup-shot" href={STAKE_COM_URL} {...external} aria-label="Open Stake.com" data-reveal="up">
-        <img src={stakeScreenshot} alt="The Stake.com home page" width={1913} height={953} />
+        <img src={stakeScreenshot} alt="The Stake.com home page" width={1913} height={953} decoding="async" />
       </a>
 
       <Step n={2} lines={['Create', 'an Account']} glow />
@@ -73,12 +73,19 @@ export function SignUpPage() {
           <AffiliateNote className="affiliate-note--left" />
         </div>
         <div className="signup-register__form" data-reveal="right" style={delay(120)}>
-          <img src={registerForm} alt={`Stake's registration form with referral code ${CODE} filled in`} width={630} height={314} />
+          <img
+            src={registerForm}
+            alt={`Stake's registration form with referral code ${CODE} filled in`}
+            width={630}
+            height={314}
+            loading="lazy"
+            decoding="async"
+          />
         </div>
       </section>
 
       <div className="signup-rewards">
-        <img className="signup-rewards__arc" src={signupArc} alt="" />
+        <img className="signup-rewards__arc" src={signupArc} alt="" loading="lazy" decoding="async" />
         <Step n={3} lines={['Enjoy our', 'Rewards']} glow />
         <RewardCards />
       </div>

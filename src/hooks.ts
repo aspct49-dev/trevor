@@ -193,12 +193,15 @@ export function useKickLive(): KickStatus['live'] | null {
 
 /** Days / hours / minutes / seconds left until `end` (epoch ms), ticking every second */
 export function useCountdown(end: number) {
-  const [now, setNow] = useState(() => Date.now())
+  // null until mounted: the pre-rendered page and the browser's first render must be identical
+  const [now, setNow] = useState<number | null>(null)
   useEffect(() => {
+    setNow(Date.now())
     const id = window.setInterval(() => setNow(Date.now()), 1000)
     return () => window.clearInterval(id)
   }, [])
 
+  if (now === null) return null
   const left = Math.max(0, end - now)
   return {
     days: Math.floor(left / 86_400_000),

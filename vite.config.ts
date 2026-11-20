@@ -4,19 +4,24 @@ import react from '@vitejs/plugin-react'
 import { handleLeaderboardRequest, tokensFromEnv } from './server/stakeLeaderboard.js'
 import type { Tokens } from './server/stakeLeaderboard.js'
 import { handleKickRequest } from './server/kick.js'
+import { clientIp, handleContactRequest, readJson } from './server/contact.js'
 
 /**
- * Serves /api/leaderboard and /api/kick from `vite` and `vite preview`, mirroring
+ * Serves /api/leaderboard, /api/kick and /api/contact from `vite` and `vite preview`, mirroring
  * the Vercel Functions in api/. The tokens come from .env and stay in this
  * Node process; only VITE_-prefixed variables ever reach the browser.
  */
-function leaderboardApi(tokens: Tokens): Plugin {
+function leaderboardApi(tokens: Tokens, env: Record<string, string>): Plugin {
   const middleware: Connect.NextHandleFunction = async (req, res, next) => {
     const url = new URL(req.url ?? '/', 'http://localhost')
-    if (url.pathname !== '/api/leaderboard' && url.pathname !== '/api/kick') return next()
+    if (!['/api/leaderboard', '/api/kick', '/api/contact'].includes(url.pathname)) return next()
 
     const { status, body } =
-      url.pathname === '/api/kick' ? await handleKickRequest() : await handleLeaderboardRequest(tokens)
+      url.pathname === '/api/contact'
+        ? await handleContactRequest(req.method, req.method === 'POST' ? await readJson(req) : undefined, clientIp(req), env)
+        : url.pathname === '/api/kick'
+          ? await handleKickRequest()
+          : await handleLeaderboardRequest(tokens)
     res.statusCode = status
     res.setHeader('Content-Type', 'application/json; charset=utf-8')
     res.setHeader('Cache-Control', 'no-store')
@@ -33,6 +38,6 @@ function leaderboardApi(tokens: Tokens): Plugin {
 export default defineConfig(({ mode }) => {
   const env = loadEnv(mode, process.cwd(), '')
   return {
-    plugins: [react(), leaderboardApi(tokensFromEnv(env))],
+    plugins: [react(), leaderboardApi(tokensFromEnv(env), env)],
   }
 })

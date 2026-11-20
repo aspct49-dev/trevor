@@ -31,6 +31,9 @@ const JOBS = [
   ['tiktok-thumb.png', 'tiktok-thumb.webp', 432, 84], // 144px slot
   ['stream-box.png', 'stream-box.webp', undefined, 90],
   ['reward-card-bg.png', 'reward-card-bg.webp', undefined, 88],
+  ['logo-mask.png', 'logo-mask.webp', undefined, 90], // the logo glow's shape (used as a CSS mask)
+  ['card-texture.png', 'card-texture.webp', undefined, 86],
+  ['register-form.png', 'register-form.webp', undefined, 90],
 ]
 
 for (const [source, output, width, quality] of JOBS) {
@@ -64,3 +67,20 @@ const icon = await sharp(path.join(assets, 'logo.png'))
   .png({ compressionLevel: 9 })
   .toFile(path.join(root, 'public', 'favicon.png'))
 console.log(`public/favicon.png       ${icon.width}x${icon.height}  ${(icon.size / 1024).toFixed(0)} kB`)
+
+// The logo for structured data and the home-screen icon
+const schemaLogo = await sharp(path.join(assets, 'logo.png'))
+  .resize({ width: 512 })
+  .png({ compressionLevel: 9 })
+  .toFile(path.join(root, 'public', 'logo.png'))
+console.log(`public/logo.png          ${schemaLogo.width}x${schemaLogo.height}  ${(schemaLogo.size / 1024).toFixed(0)} kB`)
+
+// Share image for link previews (Open Graph / X card), 1200x630: the leaderboard artwork, dimmed, with the logo
+const shareBg = await sharp(path.join(assets, 'bg-stake.png')).resize(1200, 630, { fit: 'cover', position: 'top' }).toBuffer()
+const shareLogo = await sharp(path.join(assets, 'logo.png')).resize({ width: 600 }).toBuffer()
+const dim = Buffer.from('<svg width="1200" height="630"><rect width="1200" height="630" fill="#0f0f14" fill-opacity="0.35"/></svg>')
+const share = await sharp({ create: { width: 1200, height: 630, channels: 3, background: '#0f0f14' } })
+  .composite([{ input: shareBg }, { input: dim }, { input: shareLogo, gravity: 'centre' }])
+  .jpeg({ quality: 86, mozjpeg: true })
+  .toFile(path.join(root, 'public', 'og.jpg'))
+console.log(`public/og.jpg            ${share.width}x${share.height}  ${(share.size / 1024).toFixed(0)} kB`)

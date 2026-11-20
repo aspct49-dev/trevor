@@ -1,6 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
 import { KICK_CHANNEL, TIKTOK_HANDLE, external, socialUrl } from '../../shared/site'
-import { RewardCards } from '../components/sections'
 import { delay, useKickLive } from '../hooks'
 
 import kickLogo from '../assets/kick-logo.webp'
@@ -118,6 +117,8 @@ function TikTokFeed() {
 export function MediaPage() {
   return (
     <main className="media">
+      {/* The design has no visible page title, so the page's one H1 is for screen readers and search engines */}
+      <h1 className="sr-only">Trevor Abney live streams and videos</h1>
       <section className="media-block" aria-labelledby="kick-title" data-reveal="up">
         <header className="media-head">
           <img className="media-head__logo" src={kickLogo} alt="" width={33} height={37} />
@@ -151,7 +152,6 @@ export function MediaPage() {
         <TikTokFeed />
       </section>
 
-      <RewardCards />
     </main>
   )
 }

@@ -3,7 +3,7 @@ import { Link } from 'react-router'
 import { SOCIALS, external } from '../../shared/site'
 import { useHoverAnimation } from '../hooks'
 import type { Social } from '../../shared/site'
-import { Hex, SectionDivider } from './ui'
+import { Diamond, Hex, PlatBadge, SectionDivider } from './ui'
 import { PodiumCard } from './leaderboard'
 
 import socialX from '../assets/social-x.webp'
@@ -61,7 +61,7 @@ function SocialCard({ social: s, index }: { social: Social; index: number }) {
       {...handlers}
     >
       <span className="social-card__icon">
-        <img src={icon.src} alt="" width={icon.width} height={icon.height} />
+        <img src={icon.src} alt="" width={icon.width} height={icon.height} loading="lazy" decoding="async" />
       </span>
       <h3 className="social-card__name grad-blue">{s.name}</h3>
       <p className="social-card__handle">{s.handle}</p>
@@ -80,15 +80,25 @@ function MiniPodium() {
   return (
     <div className="mini-podium" aria-hidden>
       <div className="mini-podium__slot mini-podium__slot--2">
-        <PodiumCard place={2} entry={sample(253832.92)} prize={10000} />
+        <PodiumCard place={2} entry={sample(253832.92)} prize={10000} lazy />
       </div>
       <div className="mini-podium__slot mini-podium__slot--3">
-        <PodiumCard place={3} entry={sample(175531.72)} prize={5000} />
+        <PodiumCard place={3} entry={sample(175531.72)} prize={5000} lazy />
       </div>
       <div className="mini-podium__slot mini-podium__slot--1">
-        <PodiumCard place={1} entry={sample(329832.92)} prize={20000} />
+        <PodiumCard place={1} entry={sample(329832.92)} prize={20000} lazy />
       </div>
     </div>
+  )
+}
+
+/** The design's two gems, large: the artwork for the Good Karma Days card */
+function KarmaArt() {
+  return (
+    <span className="karma-art" aria-hidden>
+      <PlatBadge className="karma-art__badge" />
+      <Diamond className="karma-art__diamond" />
+    </span>
   )
 }
 
@@ -111,17 +121,17 @@ const REWARDS = [
       </>
     ),
     text: ['Watch my stream and have', 'a chance to win $$$.'],
-    art: <img className="reward-card__gift" src={rewardGift} alt="" />,
+    art: <img className="reward-card__gift" src={rewardGift} alt="" loading="lazy" decoding="async" />,
   },
   {
-    to: '/leaderboard',
+    to: '/media',
     title: (
       <>
-        <span className="accent-light">$</span>10,000 Leaderboard
+        Good <span className="accent-light">Karma</span> Days
       </>
     ),
-    text: ['Climb to the top & secure top', 'place for big prizes!'],
-    art: <MiniPodium />,
+    text: ['On losing days, I tip the chat', 'extra to earn back good karma.'],
+    art: <KarmaArt />,
   },
 ]
 
@@ -136,7 +146,7 @@ function RewardCard({ reward: r, index }: { reward: (typeof REWARDS)[number]; in
       {...handlers}
     >
       <span className="reward-card__art">
-        <img className="reward-card__bg" src={rewardCardBg} alt="" />
+        <img className="reward-card__bg" src={rewardCardBg} alt="" loading="lazy" decoding="async" />
         <span className="reward-card__motion">{r.art}</span>
       </span>
       <h3 className="reward-card__title">{r.title}</h3>

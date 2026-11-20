@@ -2,6 +2,7 @@ import type { CSSProperties } from 'react'
 import { Link } from 'react-router'
 import { CODE, HELPLINE, MIN_AGE, SOCIALS, STAKE_COM_URL, STAKE_US_URL, external } from '../../shared/site'
 import type { Social } from '../../shared/site'
+import { GA_ID } from '../analytics'
 
 import logo from '../assets/logo.webp'
 import gambleAware from '../assets/gambleaware.png'
@@ -34,12 +35,20 @@ export function Footer() {
         <div className="footer__top">
           <div className="footer__brand">
             <Link to="/" className="footer__logo" aria-label="Trevor Abney home">
-              <img src={logo} alt="The Trevor Abney" width={122} height={64} />
+              <img src={logo} alt="The Trevor Abney" width={122} height={64} loading="lazy" decoding="async" />
             </Link>
 
             <div className="footer__marks">
               <a href="https://www.begambleaware.org" {...external}>
-                <img className="footer__aware" src={gambleAware} alt="BeGambleAware" width={163} height={24} />
+                <img
+                  className="footer__aware"
+                  src={gambleAware}
+                  alt="BeGambleAware"
+                  width={163}
+                  height={24}
+                  loading="lazy"
+                  decoding="async"
+                />
               </a>
               <span className="footer__age">{MIN_AGE}+</span>
             </div>
@@ -72,11 +81,12 @@ export function Footer() {
           </div>
 
           <nav className="footer__col" aria-label="Explore">
-            <h4>Explore</h4>
+            <h2 className="footer__heading">Explore</h2>
             <Link to="/">Home</Link>
             <Link to="/leaderboard">Leaderboard</Link>
             <Link to="/how-to-sign-up">How to Sign Up</Link>
             <Link to="/media">Media</Link>
+            <Link to="/contact">Contact</Link>
             <a href={STAKE_COM_URL} {...external}>
               Visit Stake
             </a>
@@ -86,7 +96,7 @@ export function Footer() {
           </nav>
 
           <nav className="footer__col" aria-label="Social media links">
-            <h4>Social Media</h4>
+            <h2 className="footer__heading">Social Media</h2>
             {SOCIALS.map((s) => (
               <a key={s.id} href={s.url} {...external} style={brand(s.id)}>
                 <SocialIcon id={s.id} />
@@ -101,6 +111,12 @@ export function Footer() {
           <nav className="footer__policies" aria-label="Policies">
             <Link to="/terms">Terms of Service</Link>
             <Link to="/privacy">Privacy Policy</Link>
+            <Link to="/contact">Contact</Link>
+            {GA_ID && (
+              <button type="button" onClick={() => window.dispatchEvent(new Event('trevor:cookie-settings'))}>
+                Cookie settings
+              </button>
+            )}
             <span className="footer__responsible">{MIN_AGE}+ only · Play responsibly</span>
           </nav>
         </div>
