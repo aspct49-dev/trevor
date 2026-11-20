@@ -136,7 +136,7 @@ export function LeaderboardPage() {
       <p className="lb-footnote" data-reveal="fade">
         Stake.com and Stake.us players under code {CODE} are ranked together.{' '}
         {RANK_BY === 'weighted' && 'Wagers are weighted by game RTP, as on Stake. '}
-        Each leaderboard runs from the 16th of a month to the 15th of the next, in UTC; standings update every minute.{' '}
+        Each leaderboard runs from the 16th of a month to 11:59 PM UTC on the 15th of the next; standings update every minute.{' '}
         <Link to="/terms#leaderboard">Full leaderboard terms</Link>. New here? See{' '}
         <Link to="/how-to-sign-up">how to sign up</Link>.
       </p>

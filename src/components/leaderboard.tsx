@@ -124,6 +124,9 @@ export function Podium({
 
 /* ——————————————————————— Countdown ——————————————————————— */
 
+/** "December 15": the last day a race counts (it ends as that day ends, in UTC) */
+const lastDay = (end: number) => new Date(end - 1).toLocaleDateString('en-US', { month: 'long', day: 'numeric', timeZone: 'UTC' })
+
 export function Countdown({ end }: { end: number }) {
   const left = useCountdown(end)
   // A dash until the clock starts in the browser (the pre-rendered page has no "now")
@@ -152,6 +155,8 @@ export function Countdown({ end }: { end: number }) {
         </div>
         <img className="countdown__line" src={lineRight} alt="" />
       </div>
+      {/* Shown once the clock is running in the browser: the pre-rendered page has no "now" to date it from */}
+      {left && <p className="countdown__ends">Ends {lastDay(end)} at 11:59 PM UTC</p>}
     </section>
   )
 }

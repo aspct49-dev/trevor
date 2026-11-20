@@ -59,8 +59,10 @@ export const FIRST_RACE_START = Date.UTC(2026, 10, RACE_START_DAY)
 
 /**
  * The race containing `now`: [start, end) in epoch ms, UTC. A race runs from
- * the 16th at 00:00 UTC until the 16th of the next month at 00:00 UTC, and the
- * next one starts at that same instant.
+ * the 16th at 00:00 UTC until the 16th of the next month at 00:00 UTC, i.e. it
+ * ends at 11:59 PM UTC on the 15th, and the next one starts straight after.
+ * Stake reports wagers by whole UTC day, so the window must end on a day
+ * boundary: every wager placed on the 15th (UTC) counts, none from the 16th.
  */
 export function getRaceWindow(now = Date.now()) {
   const d = new Date(now)

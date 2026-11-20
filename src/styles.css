@@ -1288,6 +1288,11 @@ main {
 .lb-page__pills + .lb-page__pills {
   margin-top: 8px;
 }
+.countdown__ends {
+  margin-top: 12px;
+  font: 600 13px/1.4 var(--font-body);
+  color: var(--muted);
+}
 .countdown__ended {
   margin-top: 12px;
   font: 700 22px/1.2 var(--font-display);

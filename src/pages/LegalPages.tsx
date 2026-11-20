@@ -95,8 +95,9 @@ export function TermsPage() {
         <h2>How the leaderboard works</h2>
         <p>
           There is one board. Players under the code {CODE} on Stake.com and on Stake.us are ranked together. A
-          race runs from the 16th of a month at 00:00 UTC until the end of the 15th of the next month (the 16th at
-          00:00 UTC), and the next one starts at that same moment. The countdown on the leaderboard page shows when
+          race runs from the 16th of a month at 00:00 UTC until 11:59 PM UTC on the 15th of the next month, and the
+          next one starts straight after, at 00:00 UTC on the 16th. Stake reports wagers by whole UTC day, so every
+          wager placed on the 15th (UTC) counts. The countdown on the leaderboard page shows when
           the current race ends. Finished races and their winners stay on the leaderboard page under Past
           Leaderboards.
         </p>
