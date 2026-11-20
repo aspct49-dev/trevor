@@ -21,6 +21,9 @@ import bgStake from '../assets/bg-stake.webp'
  * The live race, or a finished one (?race=<its first day>, or ?race=latest for
  * the most recent): the same hero, podium and table, with that race's prizes.
  */
+/** The code as written in the tagline: "Trev" */
+const CODE_NAME = CODE.charAt(0) + CODE.slice(1).toLowerCase()
+
 export function LeaderboardPage() {
   const state = useLeaderboard()
   const [rules, setRules] = useState(false)
@@ -65,7 +68,7 @@ export function LeaderboardPage() {
           </p>
         ) : (
           <p className="lb-hero__sub" data-reveal="up" style={delay(120)}>
-            Climb to Top places &amp; be under code <strong>{CODE}</strong> and win big rewards!
+            Climb to the top of the leaderboard on code <strong>{CODE_NAME}</strong>! Sign up, wager, win!
           </p>
         )}
         <div className="lb-hero__actions" data-reveal="up" style={delay(220)}>

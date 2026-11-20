@@ -1533,10 +1533,11 @@ main {
   translate: -51.6% -49.5%;
   pointer-events: none;
 }
+/* The logo's depth: a blue-to-purple copy of its shape, the same size, sitting 9px lower (3.15% of its height) */
 .home-hero__shadow {
   position: absolute;
   inset: 0;
-  top: 3.15%;
+  translate: 0 3.15%;
   background:
     linear-gradient(90deg, rgba(22, 18, 35, 0.38), rgba(22, 18, 35, 0.38)),
     linear-gradient(166.76deg, #00b6fe 0%, #a700ff 75.164%);
