@@ -2,7 +2,7 @@
  * Leaderboard rules shared by the API proxy (server/) and the page (src/).
  * Plain TypeScript with no Node or DOM dependencies, so both sides can import it.
  *
- * One combined board: players under code TREVOR on Stake.com and on Stake.us
+ * One combined board: players under code TREV on Stake.com and on Stake.us
  * are always ranked together, in a single list with a single prize table.
  * Races run a calendar month in UTC (the 1st at 00:00 UTC until the next 1st).
  * Change prizes, places or dates here.

@@ -1,6 +1,6 @@
 # Trevor Abney
 
-Site for Trevor Abney — home, the $50,000 monthly Stake × Stake.us leaderboard (code **TREVOR**),
+Site for Trevor Abney — home, the $50,000 monthly Stake × Stake.us leaderboard (code **TREV**),
 how to sign up, and media. Built from the Figma design with Vite + React + TypeScript.
 
 ## Run locally

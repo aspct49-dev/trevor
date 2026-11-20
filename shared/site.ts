@@ -3,7 +3,7 @@
  * check them (especially the Discord invite) before going live.
  */
 
-export const CODE = 'TREVOR'
+export const CODE = 'TREV'
 
 export const STAKE_COM_URL = `https://stake.com/?c=${CODE}`
 export const STAKE_US_URL = `https://stake.us/?c=${CODE}`

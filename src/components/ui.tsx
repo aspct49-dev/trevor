@@ -79,7 +79,7 @@ export function ToastProvider({ children, duration = 1800 }: { children: ReactNo
 }
 
 /**
- * "CODE: TREVOR". Clicking copies it: the button keeps its label, lights a
+ * "CODE: TREV". Clicking copies it: the button keeps its label, lights a
  * blue ring for a moment, and a toast confirms (as on kingkulbik / rekoj).
  */
 export function CodeBox() {
@@ -193,7 +193,7 @@ export function ConsentBanner() {
   )
 }
 
-/** [Visit Stake] [CODE: TREVOR] [Visit Stake.us], with the disclosure underneath */
+/** [Visit Stake] [CODE: TREV] [Visit Stake.us], with the disclosure underneath */
 export function CodeButtons() {
   return (
     <div className="code-cta">
