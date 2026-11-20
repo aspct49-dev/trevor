@@ -1,15 +1,17 @@
 import { PLATFORMS, PRIZES, RANK_BY, getRaceWindow, prizePool } from '../../shared/leaderboard'
 import type { Platform } from '../../shared/leaderboard'
+import { useState } from 'react'
 import { Link } from 'react-router'
 import { CODE } from '../../shared/site'
 import { delay, useLeaderboard } from '../hooks'
 import { CodeButtons, LeaderboardTitle, PartnerLogos } from '../components/ui'
-import { Countdown, Podium, RankingTable } from '../components/leaderboard'
+import { Countdown, Podium, RankingTable, RulesButton, RulesDialog } from '../components/leaderboard'
 
 import bgStake from '../assets/bg-stake.webp'
 
 export function LeaderboardPage() {
   const state = useLeaderboard()
+  const [rules, setRules] = useState(false)
   const data = state.data
   const prizes = data?.prizes ?? PRIZES
   const entries = data?.entries ?? []
@@ -50,6 +52,9 @@ export function LeaderboardPage() {
       </div>
 
       <Countdown end={window.end} />
+      <div className="lb-page__rules" data-reveal="fade">
+        <RulesButton onClick={() => setRules(true)} />
+      </div>
 
       <RankingTable entries={entries} prizes={prizes} />
 
@@ -57,9 +62,10 @@ export function LeaderboardPage() {
         Stake.com and Stake.us players under code {CODE} are ranked together.{' '}
         {RANK_BY === 'weighted' && 'Wagers are weighted by game RTP, as on Stake. '}
         The race resets on the 1st of every month at 00:00 UTC; standings update every minute.{' '}
-        <Link to="/terms#leaderboard">Leaderboard rules</Link>. New here? See{' '}
+        <Link to="/terms#leaderboard">Full leaderboard terms</Link>. New here? See{' '}
         <Link to="/how-to-sign-up">how to sign up</Link>.
       </p>
+      <RulesDialog open={rules} onClose={() => setRules(false)} />
     </main>
   )
 }

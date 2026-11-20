@@ -1114,6 +1114,165 @@ main {
   text-align: center;
 }
 
+/* ---------------------------------------------------------------- leaderboard rules */
+
+.lb-page__rules {
+  display: flex;
+  justify-content: center;
+  margin-top: 18px;
+}
+.rules-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  height: 30px;
+  padding: 0 14px;
+  border-radius: 4px;
+  background: var(--panel);
+  box-shadow: inset 0 1px 0 var(--panel-edge);
+  font: 700 12px/1 var(--font-body);
+  letter-spacing: 0.04em;
+  color: #c9ccd8;
+  transition:
+    background 0.25s ease,
+    color 0.15s ease,
+    transform 0.15s ease;
+}
+.rules-btn svg {
+  color: var(--blue);
+}
+.rules-btn:active {
+  transform: translateY(1px);
+}
+@media (hover: hover) and (pointer: fine) {
+  .rules-btn:hover {
+    background: #22222f;
+    color: var(--text);
+  }
+  .lb-rules__close:hover {
+    background: var(--panel);
+    color: var(--text);
+  }
+}
+
+/* The dialog: as on kingkulbik, in this site's colours */
+.lb-rules {
+  width: min(760px, calc(100vw - 32px));
+  padding: 0;
+  border: 1px solid #33334a;
+  border-radius: 12px;
+  background: #1b1b25;
+  box-shadow: 0 24px 60px rgb(0 0 0 / 0.55);
+  color: var(--text);
+}
+.lb-rules::backdrop {
+  background: rgb(8 8 12 / 0.72);
+}
+.lb-rules[open] {
+  animation: lb-rules-in 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+@keyframes lb-rules-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px) scale(0.98);
+  }
+}
+.lb-rules__body {
+  display: flex;
+  flex-direction: column;
+  padding: 20px 22px 22px;
+  outline: 0;
+}
+.lb-rules__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.lb-rules__title {
+  font: 700 20px/1.3 var(--font-display);
+  color: #fff;
+}
+.lb-rules__close {
+  display: grid;
+  flex: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 4px;
+  color: #7d87a3;
+  transition:
+    color 0.15s ease,
+    background-color 0.15s ease;
+}
+.lb-rules__intro {
+  margin-top: 8px;
+  max-width: 540px;
+  font: 500 14px/21px var(--font-body);
+  color: var(--muted);
+}
+/* Four tiles; two by two on a phone */
+.lb-rules__list {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 8px;
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.lb-rules__rule {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 14px 14px 16px;
+  border-radius: 10px;
+  background: var(--panel);
+  box-shadow: inset 0 1.5px 0 0 rgb(255 255 255 / 0.05);
+}
+.lb-rules__share {
+  width: fit-content;
+  margin-bottom: 4px;
+  font: 700 30px/1 var(--font-display);
+  background: var(--grad-blue);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+/* Counts for nothing: red */
+.lb-rules__share--none {
+  background: none;
+  color: #e5736f;
+}
+.lb-rules__rule-title {
+  font: 700 14px/1.3 var(--font-body);
+  color: var(--text);
+}
+.lb-rules__rule-text {
+  font: 500 12px/17px var(--font-body);
+  color: var(--muted);
+}
+.lb-rules__more {
+  margin-top: 16px;
+  font: 500 13px/1.6 var(--font-body);
+  color: #7d87a3;
+}
+.lb-rules__more a {
+  color: var(--blue);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+@media (max-width: 640px) {
+  .lb-rules__body {
+    padding: 16px;
+  }
+  .lb-rules__title {
+    font-size: 17px;
+  }
+  .lb-rules__list {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
 /* ---------------------------------------------------------------- home */
 
 .home {
@@ -1543,7 +1702,7 @@ main {
 
 .signup-register {
   max-width: 844px;
-  margin: 47px auto 0;
+  margin: 28px auto 0;
   padding: 0 16px;
   box-sizing: content-box;
   display: flex;
@@ -1595,7 +1754,7 @@ main {
 
 .signup-rewards {
   position: relative;
-  margin-top: 46px;
+  margin-top: 80px;
   padding-top: 0;
 }
 .signup-rewards__arc {
